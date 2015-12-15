@@ -64,3 +64,7 @@ sessionsDeviceType <- sqldf("select user_id,
                             group by user_id, device_type
                             ")
 # use reshape2 package to 'dcast' the above 2 tables separately
+sessionsActionTypeNew <- subset(sessionsActionType, user_id!='')
+sessionsDeviceTypeNew <- subset(sessionsDeviceType, user_id!='')
+row.names(sessionsActionTypeNew) <- NULL
+row.names(sessionsDeviceTypeNew) <- NULL
