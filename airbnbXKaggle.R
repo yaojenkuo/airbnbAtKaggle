@@ -74,3 +74,6 @@ userDeviceType <- dcast(sessionsDeviceTypeNew, user_id~device_type, sum)
 
 # merge userActionType & userDeviceType
 userActionDeviceSecsElapsed <- merge(userActionType, userDeviceType, by="user_id", all.x=T, all.y=T)
+# replace NA with 0
+userActionDeviceSecsElapsed[is.na(userActionDeviceSecsElapsed)] <- 0
+
