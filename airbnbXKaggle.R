@@ -10,23 +10,12 @@ testUsers <- read.table('test_users.csv', sep=',', stringsAsFactors=T, header=T)
 
 # libraries
 library(ggplot2)
-library(VIM)
 library(sqldf)
 library(reshape2)
 
-# merge ageSummary and countriesSummary
+# merge ageSummary and countriesSummary for plotting
 ageCountries <- merge(ageSummary, countriesSummary, by="country_destination", all.x=TRUE)
 write.csv(ageCountries, "ageCountries.csv", row.names=FALSE)
-
-# explorations on sessions
-ggplot(sessions, aes(action_type))+geom_bar()+coord_flip()
-aggr(sessions, prop=TRUE, number=TRUE)
-
-# merge sessions with trainUsers and testUsers separately
-sessionsTrain <- merge(sessions, trainUsers, by.x="user_id", by.y="id")# inner join
-sessionsTest <- merge(sessions, testUsers, by.x="user_id", by.y="id")# inner join
-write.csv(sessionsTrain, "c:/sessionsTrain.csv", row.names=FALSE)
-write.csv(sessionsTest, "c:/sessionsTest.csv", row.names=FALSE)
 
 # Build ABT for classification algorithm
 # Using sqldf to manipulate dataset
@@ -77,3 +66,9 @@ userActionDeviceSecsElapsed <- merge(userActionType, userDeviceType, by="user_id
 # replace NA with 0
 userActionDeviceSecsElapsed[is.na(userActionDeviceSecsElapsed)] <- 0
 
+# clean trainUsers/testUsers
+
+
+# merge trainUsers/testUsers with countriesSummary
+
+# merge trainUsers/testUsers with userActionDeviceSecsElapsed
