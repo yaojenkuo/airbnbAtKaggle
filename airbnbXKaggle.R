@@ -12,6 +12,7 @@ testUsers <- read.table('test_users.csv', sep=',', stringsAsFactors=T, header=T)
 library(ggplot2)
 library(VIM)
 library(sqldf)
+library(reshape2)
 
 # merge ageSummary and countriesSummary
 ageCountries <- merge(ageSummary, countriesSummary, by="country_destination", all.x=TRUE)
@@ -68,3 +69,8 @@ sessionsActionTypeNew <- subset(sessionsActionType, user_id!='')
 sessionsDeviceTypeNew <- subset(sessionsDeviceType, user_id!='')
 row.names(sessionsActionTypeNew) <- NULL
 row.names(sessionsDeviceTypeNew) <- NULL
+userActionType <- dcast(sessionsActionTypeNew, user_id~action_type, sum)
+userDeviceType <- dcast(sessionsDeviceTypeNew, user_id~device_type, sum)
+
+# merge userActionType & userDeviceType
+userActionDeviceSecsElapsed <- merge(userActionType, userDeviceType, by="user_id", all.x=T, all.y=T)
