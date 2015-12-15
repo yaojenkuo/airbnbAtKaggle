@@ -67,7 +67,17 @@ userActionDeviceSecsElapsed <- merge(userActionType, userDeviceType, by="user_id
 userActionDeviceSecsElapsed[is.na(userActionDeviceSecsElapsed)] <- 0
 
 # clean trainUsers/testUsers
-
+## transform date variables to date format; time variable to time format
+trainUsers$date_account_created <- as.Date(trainUsers$date_account_created, "%Y-%m-%d")
+testUsers$date_account_created <- as.Date(testUsers$date_account_created, "%Y-%m-%d")
+trainUsers$date_first_booking <- as.Date(trainUsers$date_account_created, "%Y-%m-%d")
+testUsers$date_first_booking <- as.Date(testUsers$date_account_created, "%Y-%m-%d")
+trainUsers$timestamp_first_active <- as.character(trainUsers$timestamp_first_active)
+testUsers$timestamp_first_active <- as.character(testUsers$timestamp_first_active)
+trainUsers$timestamp_first_active <- strptime(trainUsers$timestamp_first_active, "%Y%m%d%H%M%S")
+testUsers$timestamp_first_active <- strptime(testUsers$timestamp_first_active, "%Y%m%d%H%M%S")
+#trainUsers$timestamp_first_active <- format(trainUsers$timestamp_first_active, usetz=FALSE)
+#testUsers$timestamp_first_active <- format(testUsers$timestamp_first_active, usetz=FALSE)
 
 # merge trainUsers/testUsers with countriesSummary
 
