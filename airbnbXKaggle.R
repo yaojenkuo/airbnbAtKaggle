@@ -94,3 +94,10 @@ testUsers$days_first_booking_created <- testUsers$date_first_booking-testUsers$d
 # merge trainUsers/testUsers with userActionDeviceSecsElapsed
 train <- merge(trainUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
 test <- merge(testUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
+
+# Time for CLASSIFICATION!
+## Use KNN
+
+## Use Decision Tree
+
+## Use Random Forest
