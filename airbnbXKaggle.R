@@ -15,7 +15,7 @@ library(reshape2)
 
 # merge ageSummary and countriesSummary for plotting
 ageCountries <- merge(ageSummary, countriesSummary, by="country_destination", all.x=TRUE)
-write.csv(ageCountries, "ageCountries.csv", row.names=FALSE)
+#write.csv(ageCountries, "ageCountries.csv", row.names=FALSE)
 
 # Build ABT for classification algorithm
 # Using sqldf to manipulate dataset
@@ -67,6 +67,10 @@ userActionDeviceSecsElapsed <- merge(userActionType, userDeviceType, by="user_id
 userActionDeviceSecsElapsed[is.na(userActionDeviceSecsElapsed)] <- 0
 
 # clean trainUsers/testUsers
+## change id to user_id
+names(trainUsers)[1] <- "user_id"
+names(testUsers)[1] <- "user_id"
+
 ## transform date variables to date format; time variable to time format
 trainUsers$date_account_created <- as.Date(trainUsers$date_account_created, "%Y-%m-%d")
 testUsers$date_account_created <- as.Date(testUsers$date_account_created, "%Y-%m-%d")
@@ -80,8 +84,13 @@ testUsers$timestamp_first_active <- strptime(testUsers$timestamp_first_active, "
 trainUsers[is.na(trainUsers$age), "age"] <- round(mean(trainUsers$age, na.rm=T))
 testUsers[is.na(testUsers$age), "age"] <- round(mean(testUsers$age, na.rm=T))
 ## create new variable
-
-
-# merge trainUsers/testUsers with countriesSummary
+trainUsers$date_first_active <- as.Date(trainUsers$timestamp_first_active)
+testUsers$date_first_active <- as.Date(testUsers$timestamp_first_active)
+trainUsers$days_first_booking_active <- trainUsers$date_first_booking-trainUsers$date_first_active
+testUsers$days_first_booking_active <- testUsers$date_first_booking-testUsers$date_first_active
+trainUsers$days_first_booking_created <- trainUsers$date_first_booking-trainUsers$date_account_created
+testUsers$days_first_booking_created <- testUsers$date_first_booking-testUsers$date_account_created
 
 # merge trainUsers/testUsers with userActionDeviceSecsElapsed
+train <- merge(trainUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
+test <- merge(testUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
