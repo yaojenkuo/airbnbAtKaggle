@@ -76,8 +76,11 @@ trainUsers$timestamp_first_active <- as.character(trainUsers$timestamp_first_act
 testUsers$timestamp_first_active <- as.character(testUsers$timestamp_first_active)
 trainUsers$timestamp_first_active <- strptime(trainUsers$timestamp_first_active, "%Y%m%d%H%M%S")
 testUsers$timestamp_first_active <- strptime(testUsers$timestamp_first_active, "%Y%m%d%H%M%S")
-#trainUsers$timestamp_first_active <- format(trainUsers$timestamp_first_active, usetz=FALSE)
-#testUsers$timestamp_first_active <- format(testUsers$timestamp_first_active, usetz=FALSE)
+## impute missing values: mean substitution, replace age NA with mean(age)
+trainUsers[is.na(trainUsers$age), "age"] <- round(mean(trainUsers$age, na.rm=T))
+testUsers[is.na(testUsers$age), "age"] <- round(mean(testUsers$age, na.rm=T))
+## create new variable
+
 
 # merge trainUsers/testUsers with countriesSummary
 
