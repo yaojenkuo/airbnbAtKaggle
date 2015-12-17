@@ -12,6 +12,7 @@ testUsers <- read.table('test_users.csv', sep=',', stringsAsFactors=T, header=T)
 library(ggplot2)
 library(sqldf)
 library(reshape2)
+library(randomForest)
 
 # merge ageSummary and countriesSummary for plotting
 ageCountries <- merge(ageSummary, countriesSummary, by="country_destination", all.x=TRUE)
@@ -101,8 +102,8 @@ write.csv(test, "test_v1.csv", row.names=FALSE)
 
 # Time for CLASSIFICATION!
 
-## Why not k-Nearest Neighbors? We do not normalize numeric columns
-
-## Use Naive Bayes
-## Use Decision Tree
 ## Use Random Forest
+train <- trainUsers[, -c(1,4)]
+trainSample <- head(train, 10000)
+install.packages("randomForest")
+rfModel <- randomForest(x=trainSample[, -14], y=trainSample[, 14], ntree=100, nodesize=7, importance=TRUE)
