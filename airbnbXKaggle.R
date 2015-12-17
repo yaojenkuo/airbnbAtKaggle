@@ -95,9 +95,14 @@ testUsers$days_first_booking_created <- testUsers$date_first_booking-testUsers$d
 train <- merge(trainUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
 test <- merge(testUsers, userActionDeviceSecsElapsed, by="user_id", all.x=TRUE)
 
+# export training/test datasets
+write.csv(train, "train_v1.csv", row.names=FALSE)
+write.csv(test, "test_v1.csv", row.names=FALSE)
+
 # Time for CLASSIFICATION!
-## Use KNN
 
+## Why not k-Nearest Neighbors? We do not normalize numeric columns
+
+## Use Naive Bayes
 ## Use Decision Tree
-
 ## Use Random Forest
