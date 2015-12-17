@@ -103,7 +103,4 @@ write.csv(test, "test_v1.csv", row.names=FALSE)
 # Time for CLASSIFICATION!
 
 ## Use Random Forest
-train <- trainUsers[, -c(1,4)]
-trainSample <- head(train, 10000)
-install.packages("randomForest")
-rfModel <- randomForest(x=trainSample[, -14], y=trainSample[, 14], ntree=100, nodesize=7, importance=TRUE)
+#rfModel <- randomForest(x=trainSample[, -13], y=trainSample[, 13], ntree=100, nodesize=7, importance=TRUE)
