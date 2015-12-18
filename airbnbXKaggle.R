@@ -108,8 +108,20 @@ setwd("C:/airbnbAtKaggle/data")
 train <- read.table('train_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
 test <- read.table('test_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
 
-# replace NA with 0
+## Merge countriesSummary with train for visualization
+trainVisual <- merge(train, countriesSummary, by="country_destination", all.x=TRUE)
+write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
+
+## replace NA with 0
 train[is.na(train)] <- 0
 test[is.na(test)] <- 0
-trainSample <- head(train, 10000)
-rfModel <- randomForest(x=trainSample[, -1, -16], y=trainSample[, 16], ntree=100, nodesize=7, importance=TRUE)
+## run model
+rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], ntree=100, nodesize=7, importance=TRUE)
+## plot variable importance
+varImpPlot(rfModel)
+## output importance dataframe
+importance <- importance(rfModel)
+importanceDf <- data.frame(importance)
+varNames <- rownames(importanceDf)
+rownames(importanceDf) <- NULL
+impDf <- cbind(varNames, importanceDf)
