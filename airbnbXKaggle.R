@@ -103,4 +103,13 @@ write.csv(test, "test_v1.csv", row.names=FALSE)
 # Time for CLASSIFICATION!
 
 ## Use Random Forest
-#rfModel <- randomForest(x=trainSample[, -13], y=trainSample[, 13], ntree=100, nodesize=7, importance=TRUE)
+## Read in training/test datasets
+setwd("C:/airbnbAtKaggle/data")
+train <- read.table('train_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
+test <- read.table('test_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
+
+# replace NA with 0
+train[is.na(train)] <- 0
+test[is.na(test)] <- 0
+trainSample <- head(train, 10000)
+rfModel <- randomForest(x=trainSample[, -1, -16], y=trainSample[, 16], ntree=100, nodesize=7, importance=TRUE)
