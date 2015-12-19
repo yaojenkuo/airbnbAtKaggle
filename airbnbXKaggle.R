@@ -112,9 +112,12 @@ test <- read.table('test_v1.csv', sep=',', header=T, colClasses=c("date_account_
 trainVisual <- merge(train, countriesSummary, by="country_destination", all.x=TRUE)
 write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
 
-## replace NA with 0
+### option1: replace NA with 0
 train[is.na(train)] <- 0
 test[is.na(test)] <- 0
+### option2: take complete cases only
+train <- train[complete.cases(train),]
+
 ## run model
 rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], ntree=200, nodesize=8,importance=TRUE)
 ## plot variable importance
