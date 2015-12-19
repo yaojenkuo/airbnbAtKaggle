@@ -116,7 +116,7 @@ write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
 train[is.na(train)] <- 0
 test[is.na(test)] <- 0
 ## run model
-rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], ntree=100, nodesize=7, importance=TRUE)
+rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], ntree=200, nodesize=8,importance=TRUE)
 ## plot variable importance
 varImpPlot(rfModel)
 ## output importance dataframe
@@ -125,3 +125,4 @@ importanceDf <- data.frame(importance)
 varNames <- rownames(importanceDf)
 rownames(importanceDf) <- NULL
 impDf <- cbind(varNames, importanceDf)
+write.csv(impDf, "trainImp.csv", row.names=FALSE)
