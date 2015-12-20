@@ -108,18 +108,18 @@ setwd("C:/airbnbAtKaggle/data")
 train <- read.table('train_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
 test <- read.table('test_v1.csv', sep=',', header=T, colClasses=c("date_account_created"="Date", "timestamp_first_active"="POSIXct", "date_first_booking"="Date", "date_first_active"="Date"))
 
-## Merge countriesSummary with train for visualization
-trainVisual <- merge(train, countriesSummary, by="country_destination", all.x=TRUE)
-write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
-
 ### option1: replace NA with 0
 train[is.na(train)] <- 0
 test[is.na(test)] <- 0
 ### option2: take complete cases only
 train <- train[complete.cases(train),]
 
+## Merge countriesSummary with train for visualization
+trainVisual <- merge(train, countriesSummary, by="country_destination", all.x=TRUE)
+write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
+
 ## run model
-rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], ntree=200, nodesize=8,importance=TRUE)
+rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], mtry=21, nodesize=10,importance=TRUE, sampsize=c(152,440,250,707,1435,731,979,2000,247,1000,83,2000))
 ## plot variable importance
 varImpPlot(rfModel)
 ## output importance dataframe
