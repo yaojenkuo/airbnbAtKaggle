@@ -119,7 +119,7 @@ trainVisual <- merge(train, countriesSummary, by="country_destination", all.x=TR
 write.csv(trainVisual, "trainVisual.csv", row.names=FALSE)
 
 ## run model
-rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], mtry=21, nodesize=10,importance=TRUE, sampsize=c(152,440,250,707,1435,731,979,2000,247,1000,83,2000))
+rfModel <- randomForest(x=train[, c(-1,-16)], y=train[, 16], mtry=21, nodesize=10,importance=TRUE)#sampsize
 ## plot variable importance
 varImpPlot(rfModel)
 ## output importance dataframe
